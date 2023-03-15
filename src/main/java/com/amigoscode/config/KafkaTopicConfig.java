@@ -12,4 +12,5 @@ public class KafkaTopicConfig {
         return TopicBuilder.name("amigoscode")
                 .build();
     }
+
 }
