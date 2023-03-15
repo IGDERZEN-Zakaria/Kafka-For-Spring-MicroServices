@@ -13,7 +13,7 @@ https://kafka.apache.org/quickstart
 
 ### Reading events with Kafka script 
 
-get inside Kafka directory and execute this commande
+get inside Kafka directory and execute this commande to display the topic data
 
 ```
 bin/kafka-console-consumer.sh --topic "Topic_Name" --from-beginning --bootstrap-server localhost:9092
