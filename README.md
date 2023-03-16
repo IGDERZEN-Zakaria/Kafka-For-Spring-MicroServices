@@ -11,13 +11,25 @@ https://kafka.apache.org/quickstart
 
 ![pic02.png](images%2Fpic02.png)
 
-### Reading events with Kafka script 
 
-get inside Kafka directory and execute this commande to display the topic data
+## Kafka with ZooKeeper
+
+#### Start the ZooKeeper service
 
 ```
-bin/kafka-console-consumer.sh --topic "Topic_Name" --from-beginning --bootstrap-server localhost:9092
+bin/zookeeper-server-start.sh config/zookeeper.properties
+```
 
+#### Start the Kafka broker service
+```
+bin/kafka-server-start.sh config/server.properties
+```
+
+####  Read the events 
+```
+bin/kafka-console-consumer.sh --topic "Topic_Name" --from-beginning --bootstrap-server localhost:9092
+```
+```
 bin/kafka-console-consumer.sh --topic amigoscode --from-beginning --bootstrap-server localhost:9092
 ```
 
