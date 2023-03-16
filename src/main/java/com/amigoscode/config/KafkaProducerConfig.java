@@ -1,5 +1,6 @@
 package com.amigoscode.config;
 
+import com.amigoscode.Message;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,12 +29,12 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<String, String> producerFactory(){
+    public ProducerFactory<String, Message> producerFactory(){
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory){
+    public KafkaTemplate<String, Message> kafkaTemplate(ProducerFactory<String, Message> producerFactory){
         return new KafkaTemplate<>(producerFactory);
     }
 
