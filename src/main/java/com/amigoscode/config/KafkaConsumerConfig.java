@@ -1,5 +1,6 @@
 package com.amigoscode.config;
 
+import com.amigoscode.Message;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -26,22 +27,18 @@ public class KafkaConsumerConfig {
     public Map<String, Object> consumerConfig(){
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return props;
     }
 
     @Bean
-    public ConsumerFactory<String, String> consumerFactory(){
-        return new DefaultKafkaConsumerFactory<>(consumerConfig());
-
+    public ConsumerFactory<String, Message> consumerFactory(){
+        return new DefaultKafkaConsumerFactory<>(consumerConfig(),new StringDeserializer(),new JsonDeserializer<>());
     }
 
-
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> factory(
-            ConsumerFactory<String, String> consumerFactory
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Message>> factory(
+            ConsumerFactory<String, Message> consumerFactory
     ){
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, Message> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         return factory;
     }
