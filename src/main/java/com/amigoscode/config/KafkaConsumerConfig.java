@@ -1,9 +1,9 @@
 package com.amigoscode.config;
 
 import com.amigoscode.Message;
+import com.amigoscode.MessageController;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,10 +11,10 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.support.converter.JsonMessageConverter;
+import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,15 @@ public class KafkaConsumerConfig {
 
     @Bean
     public ConsumerFactory<String, Message> consumerFactory(){
-        return new DefaultKafkaConsumerFactory<>(consumerConfig(),new StringDeserializer(),new JsonDeserializer<>());
+        JsonDeserializer<Message> jsonDeserializer = new JsonDeserializer<>();
+        jsonDeserializer.addTrustedPackages("com.amigoscode");
+//        jsonDeserializer.addTrustedPackages("*");
+
+        return new DefaultKafkaConsumerFactory<>(
+                consumerConfig(),
+                new StringDeserializer(),
+                jsonDeserializer
+        );
     }
 
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Message>> factory(
@@ -41,6 +49,11 @@ public class KafkaConsumerConfig {
         ConcurrentKafkaListenerContainerFactory<String, Message> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         return factory;
+    }
+
+    @Bean
+    public RecordMessageConverter converter() {
+        return new JsonMessageConverter();
     }
 
 }

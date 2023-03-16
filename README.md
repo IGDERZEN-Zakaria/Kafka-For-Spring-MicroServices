@@ -21,4 +21,14 @@ bin/kafka-console-consumer.sh --topic "Topic_Name" --from-beginning --bootstrap-
 bin/kafka-console-consumer.sh --topic amigoscode --from-beginning --bootstrap-server localhost:9092
 ```
 
+# Troubleshooting
 
+![Conversion error.png](images%2FConversion%20error.png)![Conversion.png](images%2FConversion.png)
+
+add this Bean to the consumerConfig class
+```
+    @Bean
+    public RecordMessageConverter converter() {
+        return new JsonMessageConverter();
+    }
+```

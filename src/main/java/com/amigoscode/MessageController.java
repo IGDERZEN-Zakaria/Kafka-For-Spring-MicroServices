@@ -21,6 +21,8 @@ public class MessageController {
     @PostMapping
     public void publish(@RequestBody MessageRequest request) {
         Message message = new Message(request.message(), LocalDateTime.now());
+        System.out.println("message" + message);
+
         kafkaTemplate.send("amigoscode", message);
     }
 
